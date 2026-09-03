@@ -88,7 +88,7 @@ function renderCart() {
           <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.name}</span>
           <span style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
             <button data-dec="${idx}" class="btn btn-secondary" style="padding:2px 9px; font-size:0.8rem;">−</button>
-            <input type="number" step="0.01" min="0.01" data-qty-input="${idx}" value="${item.qty}"
+            <input type="text" inputmode="decimal" data-qty-input="${idx}" value="${item.qty}"
               style="width:64px; padding:5px 6px; text-align:center; font-size:0.85rem;" />
             <button data-inc="${idx}" class="btn btn-secondary" style="padding:2px 9px; font-size:0.8rem;">+</button>
             <span style="min-width:76px; text-align:right;">${formatNaira(item.price * item.qty)}</span>

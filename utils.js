@@ -87,6 +87,19 @@ export function flashSuccess() {
 initOfflineDetection();
 applyStoredTheme();
 
+// Numeric fields use type="text" + inputmode="decimal" instead of
+// type="number" — some embedded WebView previews (code-editor apps,
+// in-app browsers) don't reliably open a numeric keyboard for
+// type="number". This restores the same guarantee (digits + one
+// decimal point only) without relying on that input type.
+document.addEventListener("input", (e) => {
+  const el = e.target;
+  if (el.tagName === "INPUT" && el.getAttribute("inputmode") === "decimal") {
+    const cleaned = el.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
+    if (cleaned !== el.value) el.value = cleaned;
+  }
+});
+
 // Mascot subtly tracks the cursor — small, quiet life in the character.
 document.addEventListener("mousemove", (e) => {
   document.querySelectorAll(".mascot-body").forEach((body) => {

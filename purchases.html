@@ -43,8 +43,8 @@
           <select id="purProduct"></select>
         </div>
         <div style="display:flex; gap:10px;">
-          <div class="field" style="flex:1;"><label for="purQty">Quantity received</label><input id="purQty" type="number" step="0.01" required /></div>
-          <div class="field" style="flex:1;"><label for="purCost">Cost price (₦/unit)</label><input id="purCost" type="number" step="0.01" required /></div>
+          <div class="field" style="flex:1;"><label for="purQty">Quantity received</label><input id="purQty" type="text" inputmode="decimal" step="0.01" required /></div>
+          <div class="field" style="flex:1;"><label for="purCost">Cost price (₦/unit)</label><input id="purCost" type="text" inputmode="decimal" step="0.01" required /></div>
         </div>
         <div class="field"><label for="purNotes">Notes</label><input id="purNotes" placeholder="Optional" /></div>
         <button class="btn btn-primary" id="addPurchaseItemBtn" style="width:100%; margin-top:6px;">Add to purchase</button>
