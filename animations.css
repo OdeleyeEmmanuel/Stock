@@ -1,0 +1,226 @@
+/* ==========================================================
+   STOCKBOOK OS — Motion
+   One orchestrated reveal on load. Everything else answers
+   a user action (open, confirm, dismiss) rather than firing
+   on scroll or hover-decoration.
+   ========================================================== */
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.reveal-sequence > * {
+  opacity: 0;
+  animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.reveal-sequence > *:nth-child(1) { animation-delay: 0.05s; }
+.reveal-sequence > *:nth-child(2) { animation-delay: 0.15s; }
+.reveal-sequence > *:nth-child(3) { animation-delay: 0.25s; }
+.reveal-sequence > *:nth-child(4) { animation-delay: 0.35s; }
+.reveal-sequence > *:nth-child(5) { animation-delay: 0.45s; }
+
+.modal-backdrop {
+  animation: fadeIn 0.2s ease forwards;
+}
+.modal-panel {
+  animation: scaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast {
+  animation: riseIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page-transition {
+  animation: fadeIn 0.35s ease forwards;
+}
+
+/* ==========================================================
+   STOCKBOOK OS — Motion
+   One orchestrated reveal on load. Everything else answers
+   a user action (open, confirm, dismiss) rather than firing
+   on scroll or hover-decoration.
+   ========================================================== */
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
+
+@keyframes softPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184,71,42,0.28); }
+  50%      { box-shadow: 0 0 0 5px rgba(184,71,42,0); }
+}
+
+@keyframes counterPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.reveal-sequence > * {
+  opacity: 0;
+  animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.reveal-sequence > *:nth-child(1) { animation-delay: 0.05s; }
+.reveal-sequence > *:nth-child(2) { animation-delay: 0.12s; }
+.reveal-sequence > *:nth-child(3) { animation-delay: 0.19s; }
+.reveal-sequence > *:nth-child(4) { animation-delay: 0.26s; }
+.reveal-sequence > *:nth-child(5) { animation-delay: 0.33s; }
+.reveal-sequence > *:nth-child(6) { animation-delay: 0.40s; }
+
+.modal-backdrop {
+  animation: fadeIn 0.2s ease forwards;
+  backdrop-filter: blur(3px);
+}
+.modal-panel {
+  animation: scaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast {
+  animation: slideInRight 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page-transition {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* ---------- Card interactivity ---------- */
+.card {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.stat-hero:hover, .stat-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(15,22,17,0.08);
+  border-color: #CFC9B8;
+}
+.table-card tr {
+  transition: background 0.15s ease;
+}
+.table-card tbody tr:hover {
+  background: var(--paper-dim);
+}
+
+/* ---------- Sidebar sliding active indicator ---------- */
+.nav-item {
+  position: relative;
+  transition: background 0.18s ease, color 0.18s ease, padding-left 0.18s ease;
+}
+.nav-item:hover { padding-left: 16px; }
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -14px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 18px;
+  background: var(--paper);
+  border-radius: 2px;
+  animation: fadeIn 0.25s ease forwards;
+}
+
+/* ---------- Buttons: tactile press + sheen on primary ---------- */
+.btn { transition: transform 0.12s ease, opacity 0.15s ease, box-shadow 0.2s ease; }
+.btn:active { transform: scale(0.96); }
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.16), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+.btn-primary:hover::after { left: 130%; }
+
+/* ---------- Inputs: focus lift ---------- */
+input, select, textarea {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--verified);
+  box-shadow: 0 0 0 3px var(--verified-soft);
+}
+
+/* ---------- Badges ---------- */
+.badge { transition: transform 0.15s ease; }
+.badge-out { animation: softPulse 2.4s ease-in-out infinite; }
+
+/* ---------- Number counting pop on settle ---------- */
+[data-count] { opacity: 0; }
+[data-count].counted { opacity: 1; transition: opacity 0.3s ease; animation: counterPop 0.4s ease; }
+
+/* ---------- Skeleton loading state ---------- */
+.skeleton-row td {
+  color: transparent !important;
+}
+.skeleton-bar {
+  display: inline-block;
+  height: 12px;
+  width: 70%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--paper-dim) 25%, #E4E0D2 37%, var(--paper-dim) 63%);
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ---------- Toggle switch (theme, settings) micro-interaction ---------- */
+.icon-btn {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.icon-btn:hover { transform: rotate(-8deg); }
+
+/* ---------- Sidebar + mobile nav entrance ---------- */
+.sidebar-nav .nav-item {
+  opacity: 0;
+  animation: riseIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.sidebar-nav .nav-item:nth-child(1) { animation-delay: 0.02s; }
+.sidebar-nav .nav-item:nth-child(2) { animation-delay: 0.05s; }
+.sidebar-nav .nav-item:nth-child(3) { animation-delay: 0.08s; }
+.sidebar-nav .nav-item:nth-child(4) { animation-delay: 0.11s; }
+.sidebar-nav .nav-item:nth-child(5) { animation-delay: 0.14s; }
+.sidebar-nav .nav-item:nth-child(6) { animation-delay: 0.17s; }
+.sidebar-nav .nav-item:nth-child(7) { animation-delay: 0.20s; }
+.sidebar-nav .nav-item:nth-child(8) { animation-delay: 0.23s; }
+.sidebar-nav .nav-item:nth-child(9) { animation-delay: 0.26s; }
+.sidebar-nav .nav-item:nth-child(10) { animation-delay: 0.29s; }
+.sidebar-nav .nav-item:nth-child(11) { animation-delay: 0.32s; }
+.sidebar-nav .nav-item:nth-child(12) { animation-delay: 0.35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

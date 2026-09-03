@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Record Book — Stockbook OS</title>
+<link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="components.css" />
+<link rel="stylesheet" href="animations.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="offline-banner" id="offlineBanner">You are currently offline. Changes will sync when connection returns.</div>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">Stockbook OS</div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html">🏠 Dashboard</a>
+      <a class="nav-item" href="inventory.html">📦 Inventory</a>
+      <a class="nav-item" href="inventory.html?action=add">➕ Add goods</a>
+      <a class="nav-item" href="sales.html">💳 Sales</a>
+      <a class="nav-item" href="purchases.html">🛒 Purchases</a>
+      <a class="nav-item" href="receipts.html">🧾 Receipts</a>
+      <a class="nav-item active" href="records.html">📖 Record book</a>
+      <a class="nav-item" href="analytics.html">📊 Analytics</a>
+      <a class="nav-item" href="estimator.html">💰 Estimator</a>
+      <a class="nav-item" href="customers.html">👥 Customers</a>
+      <a class="nav-item" href="suppliers.html">🏢 Suppliers</a>
+      <a class="nav-item" href="settings.html">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div id="businessNameLabel">Loading business…</div><a href="#" id="logoutLink" style="display:block; margin-top:8px; color:#C7D0C9;">Log out</a></div>
+  </aside>
+  <main class="main-content page-transition">
+    <div class="topbar"><h1>Record book</h1><button class="search-trigger" id="searchTrigger">🔍 Search products, customers, receipts… <kbd>Ctrl K</kbd></button></div>
+
+    <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+      <input id="recordSearch" placeholder="Search records…" style="max-width:260px;" />
+      <input id="recordDate" type="date" style="max-width:180px;" />
+      <select id="recordType" style="max-width:200px;">
+        <option value="">All types</option>
+        <option value="sale">💰 Sales</option>
+        <option value="purchase">🛒 Purchases</option>
+        <option value="stock_added">📦 Stock added</option>
+        <option value="stock_removed">➖ Stock removed</option>
+        <option value="adjustment">✏️ Adjustments</option>
+      </select>
+      <button class="btn btn-secondary" id="exportBtn">📊 Export CSV</button>
+    </div>
+
+    <div class="card table-card">
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Qty change</th></tr></thead>
+        <tbody id="recordsBody"><tr class="skeleton-row"><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td></tr><tr class="skeleton-row"><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td></tr><tr class="skeleton-row"><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td><td><span class="skeleton-bar"></span></td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<nav class="mobile-nav no-print">
+  <a class="nav-item" href="dashboard.html">🏠</a>
+  <a class="nav-item" href="inventory.html">📦</a>
+  <a class="nav-item" href="sales.html">💳</a>
+  <a class="nav-item" href="receipts.html">🧾</a>
+  <button class="more-btn" id="mobileMoreBtn">☰</button>
+</nav>
+
+<div class="mobile-drawer-backdrop no-print" id="mobileDrawerBackdrop">
+  <div class="mobile-drawer">
+    <div class="mobile-drawer-handle"></div>
+  <a class="nav-item" href="dashboard.html">🏠 Dashboard</a>
+  <a class="nav-item" href="inventory.html">📦 Inventory</a>
+  <a class="nav-item" href="sales.html">💳 Sales</a>
+  <a class="nav-item" href="purchases.html">🛒 Purchases</a>
+  <a class="nav-item" href="receipts.html">🧾 Receipts</a>
+  <a class="nav-item active" href="records.html">📖 Record book</a>
+  <a class="nav-item" href="analytics.html">📊 Analytics</a>
+  <a class="nav-item" href="estimator.html">💰 Estimator</a>
+  <a class="nav-item" href="customers.html">👥 Customers</a>
+  <a class="nav-item" href="suppliers.html">🏢 Suppliers</a>
+  <a class="nav-item" href="settings.html">⚙️ Settings</a>
+  </div>
+</div>
+<div class="toast-stack" id="toastStack"></div>
+<script type="module" src="utils.js"></script>
+<script type="module" src="app.js"></script>
+<script type="module" src="records.js"></script>
+</body>
+</html>

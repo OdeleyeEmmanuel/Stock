@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — Stockbook OS</title>
+<link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="components.css" />
+<link rel="stylesheet" href="animations.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="offline-banner" id="offlineBanner">You are currently offline. Changes will sync when connection returns.</div>
+
+<div class="app-shell">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">Stockbook OS</div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="dashboard.html">🏠 Dashboard</a>
+      <a class="nav-item" href="inventory.html">📦 Inventory</a>
+      <a class="nav-item" href="inventory.html?action=add">➕ Add goods</a>
+      <a class="nav-item" href="sales.html">💳 Sales</a>
+      <a class="nav-item" href="purchases.html">🛒 Purchases</a>
+      <a class="nav-item" href="receipts.html">🧾 Receipts</a>
+      <a class="nav-item" href="records.html">📖 Record book</a>
+      <a class="nav-item" href="analytics.html">📊 Analytics</a>
+      <a class="nav-item" href="estimator.html">💰 Estimator</a>
+      <a class="nav-item" href="customers.html">👥 Customers</a>
+      <a class="nav-item" href="suppliers.html">🏢 Suppliers</a>
+      <a class="nav-item" href="settings.html">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="businessNameLabel">Loading business…</div>
+      <a href="#" id="logoutLink" style="display:block; margin-top:8px; color:#C7D0C9;">Log out</a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main-content page-transition">
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <button class="search-trigger" id="searchTrigger">
+        🔍 Search products, customers, receipts…
+        <kbd>Ctrl K</kbd>
+      </button>
+      <button class="btn btn-secondary" id="themeToggle">🌙</button>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stat-grid reveal-sequence">
+      <div class="card stat-hero">
+        <div>
+          <span class="label">Total inventory value</span>
+          <div class="num" id="statInventoryValue" data-count="0">₦0</div>
+          <span class="stat-change up" id="statInventoryChange"></span>
+        </div>
+      </div>
+      <div class="card stat-cell">
+        <span class="label">Total sales</span>
+        <div class="num" id="statTotalSales">₦0</div>
+      </div>
+      <div class="card stat-cell">
+        <span class="label">Total purchases</span>
+        <div class="num" id="statTotalPurchases">₦0</div>
+      </div>
+      <div class="card stat-cell">
+        <span class="label">Estimated profit</span>
+        <div class="num" id="statProfit">₦0</div>
+      </div>
+      <div class="card stat-cell">
+        <span class="label">Total products</span>
+        <div class="num" id="statProductCount">0</div>
+      </div>
+      <div class="card stat-cell">
+        <span class="label">Low stock items</span>
+        <div class="num" id="statLowStock">0</div>
+      </div>
+    </div>
+
+    <!-- Recent sales -->
+    <div class="card table-card" style="margin-bottom:20px;">
+      <div style="padding:16px 18px 0;"><h3 style="font-size:1.05rem;">Recent sales</h3></div>
+      <table>
+        <thead>
+          <tr><th>Customer</th><th>Receipt #</th><th>Amount</th><th>Date</th></tr>
+        </thead>
+        <tbody id="recentSalesBody">
+          <tr><td colspan="4" style="color:var(--stone);">No sales recorded yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Low stock alerts -->
+    <div class="card table-card">
+      <div style="padding:16px 18px 0;"><h3 style="font-size:1.05rem;">Low stock alerts</h3></div>
+      <table>
+        <thead>
+          <tr><th>Product</th><th>Quantity left</th><th>Status</th></tr>
+        </thead>
+        <tbody id="lowStockBody">
+          <tr><td colspan="3" style="color:var(--stone);">Nothing running low right now.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Mobile floating nav -->
+<nav class="mobile-nav no-print">
+  <a class="nav-item active" href="dashboard.html">🏠</a>
+  <a class="nav-item" href="inventory.html">📦</a>
+  <a class="nav-item" href="sales.html">💳</a>
+  <a class="nav-item" href="receipts.html">🧾</a>
+  <button class="more-btn" id="mobileMoreBtn">☰</button>
+</nav>
+
+<div class="mobile-drawer-backdrop no-print" id="mobileDrawerBackdrop">
+  <div class="mobile-drawer">
+    <div class="mobile-drawer-handle"></div>
+  <a class="nav-item active" href="dashboard.html">🏠 Dashboard</a>
+  <a class="nav-item" href="inventory.html">📦 Inventory</a>
+  <a class="nav-item" href="sales.html">💳 Sales</a>
+  <a class="nav-item" href="purchases.html">🛒 Purchases</a>
+  <a class="nav-item" href="receipts.html">🧾 Receipts</a>
+  <a class="nav-item" href="records.html">📖 Record book</a>
+  <a class="nav-item" href="analytics.html">📊 Analytics</a>
+  <a class="nav-item" href="estimator.html">💰 Estimator</a>
+  <a class="nav-item" href="customers.html">👥 Customers</a>
+  <a class="nav-item" href="suppliers.html">🏢 Suppliers</a>
+  <a class="nav-item" href="settings.html">⚙️ Settings</a>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script type="module" src="utils.js"></script>
+<script type="module" src="app.js"></script>
+<script type="module" src="dashboard.js"></script>
+</body>
+</html>

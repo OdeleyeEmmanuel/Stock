@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stockbook OS — Record. Track. Grow.</title>
+<link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="components.css" />
+<link rel="stylesheet" href="animations.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="offline-banner" id="offlineBanner">You are currently offline. Changes will sync when connection returns.</div>
+
+<!-- ================= WELCOME ================= -->
+<section id="welcomeView" class="welcome">
+  <div class="mascot reveal-sequence" aria-hidden="true">
+    <div class="mascot-glow"></div>
+    <div class="mascot-cord"></div>
+    <div class="mascot-body">
+      <div class="mascot-eye left"></div>
+      <div class="mascot-eye right"></div>
+      <div class="mascot-smile"></div>
+    </div>
+  </div>
+
+  <div class="welcome-mark reveal-sequence" style="text-align:center;">
+    <div>Stockbook OS</div>
+    <div class="welcome-tagline">Record. Track. Grow.</div>
+  </div>
+
+  <div class="welcome-features reveal-sequence">
+    <span>📦 Inventory management</span>
+    <span>🧾 Smart receipts</span>
+    <span>📊 Business analytics</span>
+    <span>💰 Profit estimation</span>
+    <span>☁️ Secure cloud records</span>
+  </div>
+
+  <div class="welcome-actions reveal-sequence">
+    <button class="btn btn-primary" id="getStartedBtn">Get started</button>
+    <button class="btn btn-secondary" id="signInBtn">Sign in</button>
+  </div>
+</section>
+
+<!-- ================= SIGN UP ================= -->
+<section id="signUpView" class="auth-shell" style="display:none;">
+  <div class="card auth-panel page-transition">
+    <div class="mascot mascot-sm" aria-hidden="true">
+      <div class="mascot-glow"></div>
+      <div class="mascot-cord"></div>
+      <div class="mascot-body"><div class="mascot-eye left"></div><div class="mascot-eye right"></div><div class="mascot-smile"></div></div>
+    </div>
+    <h1>Create your business account</h1>
+    <p class="sub">Set up Stockbook OS for your business in under a minute.</p>
+    <div class="form-error" id="signUpError"></div>
+    <form id="signUpForm">
+      <div class="field">
+        <label for="suFullName">Full name</label>
+        <input id="suFullName" type="text" required autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="suBusinessName">Business name</label>
+        <input id="suBusinessName" type="text" required autocomplete="organization" />
+      </div>
+      <div class="field">
+        <label for="suPhone">Phone number</label>
+        <input id="suPhone" type="tel" required autocomplete="tel" />
+      </div>
+      <div class="field">
+        <label for="suEmail">Email</label>
+        <input id="suEmail" type="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="suPassword">Password</label>
+        <input id="suPassword" type="password" required minlength="6" autocomplete="new-password" />
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%; margin-top:8px;">Create account</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="#" data-goto="signIn">Sign in</a></p>
+  </div>
+</section>
+
+<!-- ================= SIGN IN ================= -->
+<section id="signInView" class="auth-shell" style="display:none;">
+  <div class="card auth-panel page-transition">
+    <div class="mascot mascot-sm mascot-awake" aria-hidden="true">
+      <div class="mascot-glow"></div>
+      <div class="mascot-cord"></div>
+      <div class="mascot-body"><div class="mascot-eye left"></div><div class="mascot-eye right"></div><div class="mascot-smile"></div></div>
+    </div>
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to your Stockbook OS dashboard.</p>
+    <div class="form-error" id="signInError"></div>
+    <form id="signInForm">
+      <div class="field">
+        <label for="siEmail">Email</label>
+        <input id="siEmail" type="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="siPassword">Password</label>
+        <input id="siPassword" type="password" required autocomplete="current-password" />
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%; margin-top:8px;">Sign in</button>
+    </form>
+    <p class="auth-switch">
+      <a href="#" data-goto="forgotPassword">Forgot password?</a> &nbsp;·&nbsp;
+      <a href="#" data-goto="signUp">Create an account</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= FORGOT PASSWORD ================= -->
+<section id="forgotPasswordView" class="auth-shell" style="display:none;">
+  <div class="card auth-panel page-transition">
+    <h1>Reset your password</h1>
+    <p class="sub">Enter the email tied to your account. We'll send a reset link.</p>
+    <div class="form-error" id="fpError"></div>
+    <div id="fpSuccess" style="display:none; background:var(--verified-soft); color:var(--verified); font-size:0.85rem; padding:10px 12px; border-radius:var(--radius-sm); margin-bottom:14px;">
+      Check your email for a reset link.
+    </div>
+    <form id="forgotPasswordForm">
+      <div class="field">
+        <label for="fpEmail">Email</label>
+        <input id="fpEmail" type="email" required autocomplete="email" />
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%; margin-top:8px;">Send reset link</button>
+    </form>
+    <p class="auth-switch"><a href="#" data-goto="signIn">Back to sign in</a></p>
+  </div>
+</section>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script type="module" src="utils.js"></script>
+<script type="module" src="auth.js"></script>
+</body>
+</html>

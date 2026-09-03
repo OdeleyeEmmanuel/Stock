@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings — Stockbook OS</title>
+<link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="components.css" />
+<link rel="stylesheet" href="animations.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="offline-banner" id="offlineBanner">You are currently offline. Changes will sync when connection returns.</div>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">Stockbook OS</div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html">🏠 Dashboard</a>
+      <a class="nav-item" href="inventory.html">📦 Inventory</a>
+      <a class="nav-item" href="inventory.html?action=add">➕ Add goods</a>
+      <a class="nav-item" href="sales.html">💳 Sales</a>
+      <a class="nav-item" href="purchases.html">🛒 Purchases</a>
+      <a class="nav-item" href="receipts.html">🧾 Receipts</a>
+      <a class="nav-item" href="records.html">📖 Record book</a>
+      <a class="nav-item" href="analytics.html">📊 Analytics</a>
+      <a class="nav-item" href="estimator.html">💰 Estimator</a>
+      <a class="nav-item" href="customers.html">👥 Customers</a>
+      <a class="nav-item" href="suppliers.html">🏢 Suppliers</a>
+      <a class="nav-item active" href="settings.html">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div id="businessNameLabel">Loading business…</div><a href="#" id="logoutLink" style="display:block; margin-top:8px; color:#C7D0C9;">Log out</a></div>
+  </aside>
+  <main class="main-content page-transition" style="max-width:640px;">
+    <div class="topbar"><h1>Settings</h1><button class="btn btn-secondary" id="themeToggle">🌙</button></div>
+
+    <div class="card" style="padding:24px; margin-bottom:20px;">
+      <h3 style="font-size:1rem; margin-bottom:16px;">Business profile</h3>
+      <form id="settingsForm">
+        <div class="field"><label for="setName">Business name</label><input id="setName" required /></div>
+        <div class="field"><label for="setAddress">Business address</label><input id="setAddress" /></div>
+        <div style="display:flex; gap:10px;">
+          <div class="field" style="flex:1;"><label for="setPhone">Phone number</label><input id="setPhone" /></div>
+          <div class="field" style="flex:1;"><label for="setEmail">Email</label><input id="setEmail" type="email" /></div>
+        </div>
+        <div class="field"><label for="setLogo">Business logo</label><input id="setLogo" type="file" accept="image/*" /></div>
+
+        <div style="display:flex; gap:10px;">
+          <div class="field" style="flex:1;"><label for="setCurrency">Currency</label><input id="setCurrency" value="NGN" /></div>
+          <div class="field" style="flex:1;"><label for="setTax">Tax rate (%)</label><input id="setTax" type="number" step="0.01" value="0" /></div>
+        </div>
+        <div class="field"><label for="setLowStock">Default low-stock threshold</label><input id="setLowStock" type="number" value="5" /></div>
+        <div class="field"><label for="setPayment">Default payment method</label>
+          <select id="setPayment"><option value="cash">Cash</option><option value="transfer">Bank transfer</option><option value="card">Card</option><option value="pos">POS</option></select>
+        </div>
+        <div class="field"><label for="setReceiptMsg">Receipt thank-you message</label><input id="setReceiptMsg" /></div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">Save settings</button>
+      </form>
+    </div>
+  </main>
+</div>
+<nav class="mobile-nav no-print">
+  <a class="nav-item" href="dashboard.html">🏠</a>
+  <a class="nav-item" href="inventory.html">📦</a>
+  <a class="nav-item" href="sales.html">💳</a>
+  <a class="nav-item" href="receipts.html">🧾</a>
+  <button class="more-btn" id="mobileMoreBtn">☰</button>
+</nav>
+
+<div class="mobile-drawer-backdrop no-print" id="mobileDrawerBackdrop">
+  <div class="mobile-drawer">
+    <div class="mobile-drawer-handle"></div>
+  <a class="nav-item" href="dashboard.html">🏠 Dashboard</a>
+  <a class="nav-item" href="inventory.html">📦 Inventory</a>
+  <a class="nav-item" href="sales.html">💳 Sales</a>
+  <a class="nav-item" href="purchases.html">🛒 Purchases</a>
+  <a class="nav-item" href="receipts.html">🧾 Receipts</a>
+  <a class="nav-item" href="records.html">📖 Record book</a>
+  <a class="nav-item" href="analytics.html">📊 Analytics</a>
+  <a class="nav-item" href="estimator.html">💰 Estimator</a>
+  <a class="nav-item" href="customers.html">👥 Customers</a>
+  <a class="nav-item" href="suppliers.html">🏢 Suppliers</a>
+  <a class="nav-item active" href="settings.html">⚙️ Settings</a>
+  </div>
+</div>
+<div class="toast-stack" id="toastStack"></div>
+<script type="module" src="utils.js"></script>
+<script type="module" src="app.js"></script>
+<script type="module" src="settings.js"></script>
+</body>
+</html>
