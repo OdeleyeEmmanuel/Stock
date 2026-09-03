@@ -2,7 +2,7 @@
 // STOCKBOOK OS — sales / point of sale
 // ============================================================
 import { supabase, getCurrentBusiness, formatNaira } from "./supabase.js";
-import { showToast } from "./utils.js";
+import { showToast, flashSuccess } from "./utils.js";
 
 const business = await getCurrentBusiness();
 if (!business) {
@@ -17,7 +17,7 @@ const cart = []; // { product_id, name, price, qty, available }
 
 async function loadData() {
   const [{ data: p }, { data: c }] = await Promise.all([
-    supabase.from("products").select("id,name,selling_price,quantity").eq("business_id", businessId).order("name"),
+    supabase.from("products").select("id,name,selling_price,cost_price,quantity").eq("business_id", businessId).order("name"),
     supabase.from("customers").select("id,name").eq("business_id", businessId).order("name"),
   ]);
   products = p || [];
@@ -72,7 +72,7 @@ function addToCart(productId) {
     }
     existing.qty += 1;
   } else {
-    cart.push({ product_id: product.id, name: product.name, price: product.selling_price, qty: 1, available: product.quantity });
+    cart.push({ product_id: product.id, name: product.name, price: product.selling_price, cost: product.cost_price || 0, qty: 1, available: product.quantity });
   }
   renderCart();
 }
@@ -116,15 +116,22 @@ function changeQty(idx, delta) {
 
 function updateTotals() {
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const rawProfit = cart.reduce((s, i) => s + (i.price - i.cost) * i.qty, 0);
   const discount = Number(document.getElementById("discountInput").value) || 0;
   const total = Math.max(subtotal - discount, 0);
   const paid = Number(document.getElementById("amountPaidInput").value) || 0;
   const balance = paid - total;
+  const estimatedProfit = rawProfit - discount;
 
   document.getElementById("cartSubtotal").textContent = formatNaira(subtotal);
   document.getElementById("cartDiscount").textContent = formatNaira(discount);
   document.getElementById("cartTotal").textContent = formatNaira(total);
   document.getElementById("cartBalance").textContent = formatNaira(balance);
+  const profitEl = document.getElementById("cartProfit");
+  if (profitEl) {
+    profitEl.textContent = formatNaira(estimatedProfit);
+    profitEl.style.color = estimatedProfit >= 0 ? "var(--verified)" : "var(--alert)";
+  }
 }
 
 document.getElementById("discountInput")?.addEventListener("input", updateTotals);
@@ -194,6 +201,7 @@ document.getElementById("completeSaleBtn")?.addEventListener("click", async () =
   }
 
   showToast(`Sale complete — receipt ${sale.receipt_number}`, "success");
+  flashSuccess();
   cart.length = 0;
   document.getElementById("discountInput").value = 0;
   document.getElementById("amountPaidInput").value = "";

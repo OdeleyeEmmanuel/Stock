@@ -221,6 +221,36 @@ input:focus, select:focus, textarea:focus {
 .sidebar-nav .nav-item:nth-child(11) { animation-delay: 0.32s; }
 .sidebar-nav .nav-item:nth-child(12) { animation-delay: 0.35s; }
 
+@keyframes successFlash {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.success-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(28,124,84,0.14), transparent 65%);
+  animation: successFlash 0.9s ease forwards;
+}
+.success-flash::after {
+  content: "✓";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  font-size: 3.2rem;
+  color: var(--verified);
+  opacity: 0;
+  animation: successCheck 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes successCheck {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  40%  { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  70%  { transform: translate(-50%, -50%) scale(0.95); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

@@ -62,18 +62,19 @@
         </div>
         <div class="field">
           <label for="discountInput">Discount (₦)</label>
-          <input id="discountInput" type="number" value="0" min="0" />
+          <input id="discountInput" type="number" step="0.01" value="0" min="0" />
         </div>
 
         <div style="border-top:1px solid var(--stone-line); padding-top:12px; margin-top:6px; font-size:0.9rem;">
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Subtotal</span><span id="cartSubtotal">₦0</span></div>
           <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Discount</span><span id="cartDiscount">₦0</span></div>
           <div style="display:flex; justify-content:space-between; font-weight:600; font-size:1.05rem;"><span>Total</span><span id="cartTotal">₦0</span></div>
+          <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.8rem; color:var(--verified);"><span>Estimated profit on this sale</span><span id="cartProfit">₦0</span></div>
         </div>
 
         <div class="field" style="margin-top:14px;">
           <label for="amountPaidInput">Amount paid (₦)</label>
-          <input id="amountPaidInput" type="number" min="0" />
+          <input id="amountPaidInput" type="number" step="0.01" min="0" />
         </div>
         <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:14px;">
           <span>Balance</span><span id="cartBalance">₦0</span>

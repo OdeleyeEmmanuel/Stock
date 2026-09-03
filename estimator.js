@@ -78,6 +78,26 @@ async function run() {
     if (top) insights.push({ icon: "🏆", text: `Your best-selling product overall is ${top[0]}.` });
   }
 
+  const { data: profitLines } = await supabase
+    .from("inventory_transactions")
+    .select("profit, products(name)")
+    .eq("business_id", businessId)
+    .eq("type", "sale")
+    .not("profit", "is", null)
+    .limit(500);
+
+  if (profitLines && profitLines.length) {
+    const profitTotals = {};
+    profitLines.forEach((r) => {
+      const name = r.products?.name || "Unknown product";
+      profitTotals[name] = (profitTotals[name] || 0) + Number(r.profit);
+    });
+    const topProfit = Object.entries(profitTotals).sort((a, b) => b[1] - a[1])[0];
+    if (topProfit && topProfit[1] > 0) {
+      insights.push({ icon: "💎", text: `${topProfit[0]} has earned you the most actual profit — ${formatNaira(topProfit[1])} so far.` });
+    }
+  }
+
   const list = document.getElementById("insightsList");
   list.innerHTML = insights.length
     ? insights.map((i) => `<div style="display:flex; gap:10px; align-items:flex-start; font-size:0.9rem;"><span>${i.icon}</span><span>${i.text}</span></div>`).join("")

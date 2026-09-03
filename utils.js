@@ -76,6 +76,14 @@ export function toggleTheme() {
   }
 }
 
+/** Briefly flashes a quiet, premium success indicator across the screen. */
+export function flashSuccess() {
+  const el = document.createElement("div");
+  el.className = "success-flash";
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 900);
+}
+
 initOfflineDetection();
 applyStoredTheme();
 

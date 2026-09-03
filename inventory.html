@@ -71,7 +71,26 @@
       <form id="productForm">
         <input type="hidden" id="pId" />
         <div class="field"><label for="pName">Product name</label><input id="pName" required /></div>
-        <div class="field"><label for="pCategory">Category</label><input id="pCategory" placeholder="e.g. Grains" /></div>
+        <div class="field"><label for="pCategory">Category</label>
+          <input id="pCategory" list="categoryOptions" placeholder="Pick or type a category" />
+          <datalist id="categoryOptions">
+            <option value="Drinks">
+            <option value="Food & Ingredients">
+            <option value="Soups & Spices">
+            <option value="Snacks">
+            <option value="Shoes">
+            <option value="Nylons & Packaging">
+            <option value="Clothing & Fashion">
+            <option value="Cosmetics & Toiletries">
+            <option value="Electronics">
+            <option value="Household Items">
+            <option value="Stationery">
+            <option value="Building Materials">
+            <option value="Phones & Accessories">
+            <option value="Groceries">
+            <option value="Others">
+          </datalist>
+        </div>
         <div class="field"><label for="pDescription">Description</label><input id="pDescription" /></div>
         <div style="display:flex; gap:10px;">
           <div class="field" style="flex:1;"><label for="pQuantity">Quantity</label><input id="pQuantity" type="number" step="0.01" required /></div>

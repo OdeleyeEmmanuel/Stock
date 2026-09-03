@@ -60,12 +60,24 @@ async function loadProducts() {
   allProducts = (data || []).map((p) => ({ ...p, category_name: p.categories?.name }));
   renderRows(allProducts);
 
-  // Populate category filter
+  // Populate category filter dropdown + merge real categories into the picker datalist
   const categories = [...new Set(allProducts.map((p) => p.category_name).filter(Boolean))];
   const select = document.getElementById("categoryFilter");
   select.innerHTML =
     `<option value="">All categories</option>` +
     categories.map((c) => `<option value="${c}">${c}</option>`).join("");
+
+  const datalist = document.getElementById("categoryOptions");
+  if (datalist) {
+    const existingValues = new Set([...datalist.options].map((o) => o.value));
+    categories.forEach((c) => {
+      if (!existingValues.has(c)) {
+        const opt = document.createElement("option");
+        opt.value = c;
+        datalist.appendChild(opt);
+      }
+    });
+  }
 }
 
 function applyFilters() {
