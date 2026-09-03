@@ -84,11 +84,12 @@ function renderCart() {
   } else {
     container.innerHTML = cart
       .map(
-        (item, idx) => `<div style="display:flex; justify-content:space-between; align-items:center; font-size:0.88rem;">
-          <span>${item.name}</span>
-          <span style="display:flex; align-items:center; gap:8px;">
+        (item, idx) => `<div style="display:flex; justify-content:space-between; align-items:center; font-size:0.88rem; gap:8px;">
+          <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.name}</span>
+          <span style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
             <button data-dec="${idx}" class="btn btn-secondary" style="padding:2px 9px; font-size:0.8rem;">−</button>
-            ${item.qty}
+            <input type="number" step="0.01" min="0.01" data-qty-input="${idx}" value="${item.qty}"
+              style="width:64px; padding:5px 6px; text-align:center; font-size:0.85rem;" />
             <button data-inc="${idx}" class="btn btn-secondary" style="padding:2px 9px; font-size:0.8rem;">+</button>
             <span style="min-width:76px; text-align:right;">${formatNaira(item.price * item.qty)}</span>
           </span>
@@ -98,16 +99,31 @@ function renderCart() {
 
     container.querySelectorAll("[data-inc]").forEach((btn) => btn.addEventListener("click", () => changeQty(+btn.dataset.inc, 1)));
     container.querySelectorAll("[data-dec]").forEach((btn) => btn.addEventListener("click", () => changeQty(+btn.dataset.dec, -1)));
+    container.querySelectorAll("[data-qty-input]").forEach((input) => {
+      input.addEventListener("change", () => setQty(+input.dataset.qtyInput, Number(input.value)));
+      input.addEventListener("click", (e) => e.target.select());
+    });
   }
   updateTotals();
 }
 
 function changeQty(idx, delta) {
   const item = cart[idx];
-  const newQty = item.qty + delta;
-  if (newQty <= 0) { cart.splice(idx, 1); renderCart(); return; }
+  const newQty = Math.round((item.qty + delta) * 100) / 100;
+  applyQty(idx, newQty);
+}
+
+/** Set a cart line to an exact quantity typed by the user — supports decimals (kg, litres, etc). */
+function setQty(idx, newQty) {
+  applyQty(idx, newQty);
+}
+
+function applyQty(idx, newQty) {
+  const item = cart[idx];
+  if (!newQty || newQty <= 0 || Number.isNaN(newQty)) { cart.splice(idx, 1); renderCart(); return; }
   if (newQty > item.available) {
     showToast(`Only ${item.available} of ${item.name} in stock`, "warning");
+    renderCart(); // revert the input back to the last valid value
     return;
   }
   item.qty = newQty;
