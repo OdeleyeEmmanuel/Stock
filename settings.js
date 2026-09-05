@@ -1,7 +1,7 @@
 // ============================================================
 // STOCKBOOK OS — settings
 // ============================================================
-import { supabase, getCurrentBusiness } from "./supabase.js";
+import { supabase, getCurrentBusiness, deleteAccountPermanently } from "./supabase.js";
 import { showToast } from "./utils.js";
 
 const business = await getCurrentBusiness();
@@ -79,3 +79,46 @@ document.getElementById("settingsForm")?.addEventListener("submit", async (e) =>
 });
 
 if (business) load();
+
+// ---------- deactivate account (soft, reversible) ----------
+document.getElementById("deactivateBtn")?.addEventListener("click", async () => {
+  if (!business) return;
+  const confirmed = confirm(
+    "Deactivate your account? You'll be signed out and won't be able to use Stockbook OS until you sign back in to reactivate it. Nothing is deleted."
+  );
+  if (!confirmed) return;
+
+  const { error } = await supabase.from("businesses").update({ is_active: false }).eq("id", businessId);
+  if (error) {
+    showToast("Could not deactivate account: " + error.message, "error");
+    return;
+  }
+  await supabase.auth.signOut();
+  window.location.href = "index.html";
+});
+
+// ---------- delete account permanently ----------
+document.getElementById("deleteAccountBtn")?.addEventListener("click", async () => {
+  const typed = prompt(
+    `This permanently deletes your business, all inventory, sales, purchases, and your login — everything. This cannot be undone.\n\nType DELETE to confirm.`
+  );
+  if (typed !== "DELETE") {
+    if (typed !== null) showToast("Account not deleted — confirmation text didn't match.", "warning");
+    return;
+  }
+
+  const btn = document.getElementById("deleteAccountBtn");
+  btn.disabled = true;
+  btn.textContent = "Deleting…";
+
+  const { error } = await deleteAccountPermanently();
+  if (error) {
+    showToast("Could not delete account: " + error, "error");
+    btn.disabled = false;
+    btn.textContent = "Delete permanently";
+    return;
+  }
+
+  await supabase.auth.signOut();
+  window.location.href = "index.html";
+});

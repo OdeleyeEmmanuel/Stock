@@ -177,6 +177,29 @@ document.getElementById("signInForm")?.addEventListener("submit", async (e) => {
     return;
   }
 
+  // Check whether this account was deactivated — if so, offer to
+  // reactivate right here rather than silently letting them into a
+  // dashboard that will look broken, or blocking them out forever.
+  const { data: business } = await supabase
+    .from("businesses")
+    .select("id,is_active")
+    .eq("owner_id", (await supabase.auth.getUser()).data.user.id)
+    .maybeSingle();
+
+  if (business && business.is_active === false) {
+    const reactivate = confirm(
+      "This account is deactivated. Would you like to reactivate it now and continue to your dashboard?"
+    );
+    if (!reactivate) {
+      await supabase.auth.signOut();
+      setError("signInError", "Account remains deactivated. Sign in again anytime to reactivate.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Sign in";
+      return;
+    }
+    await supabase.from("businesses").update({ is_active: true }).eq("id", business.id);
+  }
+
   window.location.href = "dashboard.html";
 });
 

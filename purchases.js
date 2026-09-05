@@ -30,8 +30,29 @@ async function loadData() {
 
   const body = document.getElementById("purchasesBody");
   body.innerHTML = (purchases || []).length
-    ? purchases.map((pu) => `<tr><td>${pu.suppliers?.name || "—"}</td><td>${formatNaira(pu.total)}</td><td>${new Date(pu.created_at).toLocaleDateString("en-NG")}</td></tr>`).join("")
-    : `<tr><td colspan="3" style="color:var(--stone);">No purchases recorded yet.</td></tr>`;
+    ? purchases.map((pu) => `<tr>
+        <td>${pu.suppliers?.name || "—"}</td>
+        <td>${formatNaira(pu.total)}</td>
+        <td>${new Date(pu.created_at).toLocaleDateString("en-NG")}</td>
+        <td><button class="btn btn-secondary" data-delete-purchase="${pu.id}" style="padding:5px 11px; font-size:0.78rem; color:var(--alert);">Delete</button></td>
+      </tr>`).join("")
+    : `<tr><td colspan="4" style="color:var(--stone);">No purchases recorded yet.</td></tr>`;
+
+  body.querySelectorAll("[data-delete-purchase]").forEach((btn) => {
+    btn.addEventListener("click", () => deletePurchase(btn.dataset.deletePurchase));
+  });
+}
+
+async function deletePurchase(id) {
+  const confirmed = confirm("Delete this purchase? The stock it added will be reversed automatically, and this can't be undone.");
+  if (!confirmed) return;
+  const { error } = await supabase.rpc("void_purchase", { target_purchase_id: id });
+  if (error) {
+    showToast("Could not delete purchase: " + error.message, "error");
+    return;
+  }
+  showToast("Purchase deleted — stock reversed", "success");
+  loadData();
 }
 
 function renderPurchaseCart() {

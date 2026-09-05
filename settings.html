@@ -57,6 +57,27 @@
         <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">Save settings</button>
       </form>
     </div>
+
+    <div class="card" style="padding:24px; border-color:var(--alert); margin-bottom:20px;">
+      <h3 style="font-size:1rem; margin-bottom:6px; color:var(--alert);">Danger zone</h3>
+      <p style="font-size:0.85rem; margin-bottom:16px;">These actions affect your whole account, not just one record.</p>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 0; border-top:1px solid var(--stone-line);">
+        <div>
+          <div style="font-weight:600; font-size:0.9rem;">Deactivate account</div>
+          <div style="font-size:0.8rem; color:var(--stone);">Temporarily locks your account. Sign back in anytime to reactivate — nothing is deleted.</div>
+        </div>
+        <button class="btn btn-secondary" id="deactivateBtn" style="flex-shrink:0;">Deactivate</button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 0; border-top:1px solid var(--stone-line);">
+        <div>
+          <div style="font-weight:600; font-size:0.9rem; color:var(--alert);">Delete account permanently</div>
+          <div style="font-size:0.8rem; color:var(--stone);">Erases your business, inventory, sales, purchases, and login — everything. Cannot be undone.</div>
+        </div>
+        <button class="btn btn-secondary" id="deleteAccountBtn" style="flex-shrink:0; color:var(--alert); border-color:var(--alert);">Delete permanently</button>
+      </div>
+    </div>
   </main>
 </div>
 <nav class="mobile-nav no-print">

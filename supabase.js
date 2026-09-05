@@ -62,7 +62,19 @@ export async function getCurrentBusiness() {
   return data;
 }
 
-/** Redirects to the welcome screen if no session exists. Call at top of protected pages. */
+/** Permanently deletes the current user's account via the server-side edge function. */
+export async function deleteAccountPermanently() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { error: "No active session" };
+
+  const { data, error } = await supabase.functions.invoke("delete-account", {
+    method: "POST",
+  });
+
+  if (error) return { error: error.message || "Could not delete account" };
+  if (data?.error) return { error: data.error };
+  return { error: null };
+}
 export async function requireAuth() {
   const {
     data: { session },

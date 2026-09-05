@@ -35,7 +35,10 @@ function renderRows(list) {
         <td>${formatNaira(costValue)}</td>
         <td>${formatNaira(sellValue)}</td>
         <td>${statusBadge(p)}</td>
-        <td><button class="btn btn-secondary" data-edit="${p.id}" style="padding:6px 12px; font-size:0.8rem;">Edit</button></td>
+        <td style="white-space:nowrap;">
+          <button class="btn btn-secondary" data-edit="${p.id}" style="padding:6px 12px; font-size:0.8rem;">Edit</button>
+          <button class="btn btn-secondary" data-delete="${p.id}" data-name="${p.name}" style="padding:6px 12px; font-size:0.8rem; color:var(--alert); margin-left:4px;">Delete</button>
+        </td>
       </tr>`;
     })
     .join("");
@@ -43,6 +46,20 @@ function renderRows(list) {
   body.querySelectorAll("[data-edit]").forEach((btn) => {
     btn.addEventListener("click", () => openModal(list.find((p) => p.id === btn.dataset.edit)));
   });
+  body.querySelectorAll("[data-delete]").forEach((btn) => {
+    btn.addEventListener("click", () => deleteProduct(btn.dataset.delete, btn.dataset.name));
+  });
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`Delete "${name}"? This removes it from inventory permanently. Past sales/purchase history that mentions it is kept for your records.`)) return;
+  const { error } = await supabase.from("products").delete().eq("id", id);
+  if (error) {
+    showToast("Could not delete product: " + error.message, "error");
+    return;
+  }
+  showToast("Product deleted", "success");
+  loadProducts();
 }
 
 async function loadProducts() {

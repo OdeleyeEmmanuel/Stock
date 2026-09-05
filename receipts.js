@@ -80,4 +80,23 @@ document.getElementById("shareReceiptBtn")?.addEventListener("click", async () =
   }
 });
 
+document.getElementById("deleteSaleBtn")?.addEventListener("click", async () => {
+  if (!currentSale) { showToast("Select a receipt first", "warning"); return; }
+  const confirmed = confirm(
+    `Delete sale ${currentSale.receipt_number}? Stock for every item in it will be added back automatically, and this can't be undone.`
+  );
+  if (!confirmed) return;
+
+  const { error } = await supabase.rpc("void_sale", { target_sale_id: currentSale.id });
+  if (error) {
+    showToast("Could not delete sale: " + error.message, "error");
+    return;
+  }
+  showToast("Sale deleted — stock restored", "success");
+  currentSale = null;
+  document.getElementById("receiptDetailContent").innerHTML =
+    '<p style="text-align:center; color:var(--stone); padding:40px 0;">Select a receipt to view.</p>';
+  loadReceipts();
+});
+
 if (business) loadReceipts();
